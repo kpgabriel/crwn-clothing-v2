@@ -2,7 +2,7 @@ import { createSelector } from "reselect";
 
 const selectCategoryReducer = (state) => state.categories;
 
-// memoized selector only reruns when categorySlice is different. 
+// memoized selector only reruns when categorySlice is different.
 export const slectCategories = createSelector(
 	[selectCategoryReducer],
 	(categorySlice) => categorySlice.categories
@@ -19,4 +19,9 @@ export const selectCategoryMap = createSelector(
 			acc[title.toLowerCase()] = items;
 			return acc;
 		}, {})
+);
+
+export const selectCategoriesIsLoading = createSelector(
+	[selectCategoryReducer],
+	(categorySlice) => categorySlice.isLoading
 );
