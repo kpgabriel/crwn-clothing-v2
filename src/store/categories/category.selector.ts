@@ -13,7 +13,7 @@ export const slectCategories = createSelector(
 );
 
 // memoized again. For the mapping
-// As long as categories array has not cahnged do not bother re-reunning
+// As long as categories array has not changed do not bother re-reunning
 // Runs at least once.
 export const selectCategoryMap = createSelector(
 	[slectCategories],

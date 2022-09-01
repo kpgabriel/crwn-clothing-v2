@@ -5,20 +5,25 @@ type Matchable<AC extends () => AnyAction> = AC & {
 	match(action: AnyAction): action is ReturnType<AC>;
 };
 
-type Human = {
-	name: string;
-};
 
-type Alien = {
-	fly: () => void;
-};
 
-const MyFunc = (): Human => {}
+export function withMatcher<AC extends () => AnyAction & { type: string }>(
+	actionCreator: AC
+): Matchable<AC>;
 
-const Josh: Human & Alien = {
-	name: "josh",
-	fly: () => {},
-};
+export function withMatcher<
+	AC extends (...args: any[]) => AnyAction & { type: string }
+>(actionCreator: AC): Matchable<AC>;
+
+export function withMatcher(actionCreator: Function) {
+	const type = actionCreator().type;
+	return Object.assign(actionCreator, {
+		type,
+		match(action: AnyAction) {
+			return action.type === type;
+		},
+	});
+}
 
 export type ActionWithPayload<T, P> = { type: T; payload: P };
 
