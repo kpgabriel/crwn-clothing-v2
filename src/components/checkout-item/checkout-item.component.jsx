@@ -10,12 +10,12 @@ import {
 	RemoveButton,
 } from "./checkout-item.styles.jsx";
 import { useSelector, useDispatch } from "react-redux";
-import { selectCartItems } from "../../store/cart/cart.selector.js";
+import { selectCartItems } from "../../store/cart/cart.selector";
 import {
 	addItemToCart,
 	removeItemFromCart,
 	clearItemFromCart,
-} from "../../store/cart/cart.action.js";
+} from "../../store/cart/cart.action";
 
 const CheckoutItem = ({ cartItem }) => {
 	const cartItems = useSelector(selectCartItems);

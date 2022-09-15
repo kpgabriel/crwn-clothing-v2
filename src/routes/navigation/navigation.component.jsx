@@ -1,23 +1,22 @@
-import { Fragment, useContext, useState } from "react";
-import { Outlet, Link } from "react-router-dom";
+import { Fragment, useContext, useState } from 'react';
+import { Outlet, Link } from 'react-router-dom';
 
-import { useDispatch, useSelector } from "react-redux";
-import { selectCurrentUser } from "../../store/user/user.selector";
-import { selectIsCartOpen } from "../../store/cart/cart.selector";
+import { useDispatch, useSelector } from 'react-redux';
+import { selectCurrentUser } from '../../store/user/user.selector';
+import { selectIsCartOpen } from '../../store/cart/cart.selector';
 
-import { signOutUser } from "../../utils/firebase/firebase.utils.js";
-import CartIcon from "../../components/cart-icon/cart-icon.component";
-import CartDropdown from "../../components/cart-dropdown/cart-dropwdown.component";
-import { ReactComponent as CrwnLogo } from "../../assests/crown.svg";
+import CartIcon from '../../components/cart-icon/cart-icon.component';
+import CartDropdown from '../../components/cart-dropdown/cart-dropwdown.component';
+import { ReactComponent as CrwnLogo } from '../../assests/crown.svg';
 
 import {
 	NavigationContainer,
 	LogoContainer,
 	NavLinks,
 	NavLink,
-} from "./navigation.styles.jsx";
+} from './navigation.styles.jsx';
 
-import { signOutStart } from "../../store/user/user.action";
+import { signOutStart } from '../../store/user/user.action';
 
 const Navigation = () => {
 	const currentUser = useSelector(selectCurrentUser);
@@ -32,7 +31,11 @@ const Navigation = () => {
 				<LogoContainer to="/">
 					<CrwnLogo className="logo" />
 				</LogoContainer>
+
 				<NavLinks>
+					<NavLink to="/">
+						{currentUser ? <>HELLO {currentUser.displayName.toUpperCase()}</> : <></>}
+					</NavLink>
 					<NavLink to="/shop">SHOP</NavLink>
 					{currentUser ? (
 						<NavLink as="span" onClick={signOutCurrentUser}>
