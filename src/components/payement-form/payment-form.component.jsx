@@ -1,5 +1,10 @@
 import React, { useState } from 'react';
-import { CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
+import {
+	CardElement,
+	useStripe,
+	useElements,
+	PaymentElement,
+} from '@stripe/react-stripe-js';
 import { BUTTON_TYPE_CLASSES } from '../button/button.component';
 import {
 	PaymentFormContainer,
@@ -7,7 +12,7 @@ import {
 	PaymentButton,
 } from './payment-form.styles';
 import { useSelector } from 'react-redux';
-import { selectCartPrice } from '../../store/cart/cart.selector';
+import { selectCartPrice, selectCartItems } from '../../store/cart/cart.selector';
 import { selectCurrentUser } from '../../store/user/user.selector';
 
 const PaymentForm = () => {
@@ -15,7 +20,9 @@ const PaymentForm = () => {
 	const elements = useElements();
 	const amount = useSelector(selectCartPrice);
 	const currentUser = useSelector(selectCurrentUser);
+	const cartItems = useSelector(selectCartItems);
 	const [isProcessingPayment, setIsProcessingPayment] = useState(false);
+
 	const paymentHandler = async (e) => {
 		e.preventDefault();
 
@@ -54,17 +61,37 @@ const PaymentForm = () => {
 
 		setIsProcessingPayment(false);
 	};
+	const stripePayment = async (e) => {
+		e.preventDefault();
+
+		if (!stripe || !elements) {
+			return;
+		}
+		setIsProcessingPayment(true);
+		const response = await fetch(
+			'/.netlify/functions/create-checkout-session',
+			{
+				method: 'post',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify({ amount: amount * 100, cartItems: cartItems }),
+			}
+		).then((res) => res.json());
+		window.location.replace(response);
+		setIsProcessingPayment(false);
+	};
 
 	return (
 		<PaymentFormContainer>
-			<FormContainer onSubmit={paymentHandler}>
-				<h2>Credit Card Payment: </h2>
-				<CardElement />
+			<FormContainer onSubmit={stripePayment}>
+				{/* <h2>Credit Card Payment: </h2>
+				<CardElement /> */}
 				<PaymentButton
 					isLoading={isProcessingPayment}
 					buttonType={BUTTON_TYPE_CLASSES.inverted}
 				>
-					Pay now
+					Checkout
 				</PaymentButton>
 			</FormContainer>
 		</PaymentFormContainer>

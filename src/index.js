@@ -6,7 +6,7 @@ import reportWebVitals from './reportWebVitals';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import { Elements } from '@stripe/react-stripe-js';
-import { stripePromise } from './utils/stripe/stripe.utils';
+import { stripePromise, options } from './utils/stripe/stripe.utils';
 import { BrowserRouter } from 'react-router-dom';
 import { store, persistor } from './store/store';
 
