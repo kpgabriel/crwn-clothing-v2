@@ -1,21 +1,19 @@
 import Button, { BUTTON_TYPE_CLASSES } from '../button/button.component';
-import { addItemToCart } from '../../store/cart/cart.action';
+import { addItemToCart } from '../../store/cart/cart.reducer';
 import {
   ProductCartContainer,
   Footer,
   Name,
   Price,
 } from './product-card.styles';
-import { useDispatch, useSelector } from 'react-redux';
-import { selectCartItems } from '../../store/cart/cart.selector';
+import { useDispatch } from 'react-redux';
 
 const ProductCard = ({ product }) => {
   const { name, price, imageUrl } = product;
-  const cart = useSelector(selectCartItems);
   const dispatch = useDispatch();
 
   const addProductToCart = () => {
-    dispatch(addItemToCart(cart, product));
+    dispatch(addItemToCart(product));
   };
 
   return (
